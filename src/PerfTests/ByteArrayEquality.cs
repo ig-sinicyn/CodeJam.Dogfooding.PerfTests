@@ -1,9 +1,44 @@
 ﻿using System;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.InteropServices;
+using System.Text;
+
+using NUnit.Framework;
 
 namespace CodeJam.Dogfooding.PerfTests
 {
+	public static class ByteArrayEqualityTest
+	{
+		private static readonly byte[] _bytes = Encoding.Default.GetBytes("Hello, world!");
+		private static readonly byte[] _sameBytes = Encoding.Default.GetBytes("Hello, world!");
+		private static readonly byte[] _otherBytes = Encoding.Default.GetBytes("Emm?");
+
+		private static void TestCore(Func<byte[], byte[], bool> comparer)
+		{
+			var algName = comparer.Method.Name;
+
+			Assert.True(comparer(_bytes,_bytes), algName + nameof(_bytes));
+			Assert.True(comparer(_sameBytes, _sameBytes), algName + nameof(_sameBytes));
+			Assert.True(comparer(_otherBytes, _otherBytes), algName + nameof(_otherBytes));
+			Assert.True(comparer(_bytes, _sameBytes), algName + nameof(_bytes) + nameof(_sameBytes));
+			Assert.False(comparer(_bytes, _otherBytes), algName + nameof(_bytes) + nameof(_otherBytes));
+		}
+
+		[Test]
+		public static void TestEqualsForLoop() => TestCore(ByteArrayEquality.EqualsForLoop);
+		[Test]
+		public static void TestEqualsLinq() => TestCore(ByteArrayEquality.EqualsLinq);
+		[Test]
+		public static void TestEqualsCodeJam() => TestCore(ByteArrayEquality.EqualsCodeJam);
+		[Test]
+		public static void TestEqualsVectors() => TestCore(ByteArrayEquality.EqualsVectors);
+		[Test]
+		public static void TestEqualsUnsafe() => TestCore(ByteArrayEquality.EqualsUnsafe);
+		[Test]
+		public static void TestEqualsInterop() => TestCore(ByteArrayEquality.EqualsInterop);
+	}
+
 	public static class ByteArrayEquality
 	{
 		public static bool EqualsForLoop(byte[] a, byte[] b)
@@ -38,7 +73,7 @@ namespace CodeJam.Dogfooding.PerfTests
 			var max = a.Length - a.Length % Vector<byte>.Count;
 			for (i = 0; i < max; i += Vector<byte>.Count)
 			{
-				if (new Vector<Byte>(a, i) != new Vector<byte>(b, i))
+				if (new Vector<byte>(a, i) != new Vector<byte>(b, i))
 					return false;
 			}
 			if (i < a.Length)
@@ -51,10 +86,11 @@ namespace CodeJam.Dogfooding.PerfTests
 			}
 			return true;
 		}
-		
+
 		// Copyright (c) 2008-2013 Hafthor Stefansson
 		// Distributed under the MIT/X11 software license
 		// Ref: http://www.opensource.org/licenses/mit-license.php.
+		// THANKSTO: http://stackoverflow.com/a/8808245/318263
 		public static unsafe bool EqualsUnsafe(byte[] a1, byte[] a2)
 		{
 			if (a1 == null || a2 == null || a1.Length != a2.Length)
@@ -75,6 +111,18 @@ namespace CodeJam.Dogfooding.PerfTests
 						return false;
 				return true;
 			}
+		}
+
+		[DllImport("msvcrt.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern int memcmp(byte[] b1, byte[] b2, long count);
+
+		// THANKSTO: http://stackoverflow.com/a/1445405/318263
+		// P/Invoke... booo...
+		public static bool EqualsInterop(byte[] b1, byte[] b2)
+		{
+			// Validate buffers are the same length.
+			// This also ensures that the count does not exceed the length of either buffer.  
+			return b1.Length == b2.Length && memcmp(b1, b2, b1.Length) == 0;
 		}
 	}
 }

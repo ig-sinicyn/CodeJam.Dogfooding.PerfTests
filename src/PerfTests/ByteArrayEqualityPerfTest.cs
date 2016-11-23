@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Net.Configuration;
@@ -32,7 +32,7 @@ namespace CodeJam.Dogfooding.PerfTests
 						TargetCount = 500,
 						InvocationCount = 256
 					}
-				});
+				}, true);
 		#endregion
 	}
 

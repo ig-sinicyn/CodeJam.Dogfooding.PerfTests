@@ -23,7 +23,7 @@ namespace CodeJam.Dogfooding.PerfTests
 	{
 		#region Implementation of ICompetitionModifier
 		public void Modify(ManualCompetitionConfig competitionConfig) =>
-			competitionConfig.ApplyToJobs(
+			competitionConfig.ApplyModifier(
 				new Job()
 				{
 					Run =
@@ -32,7 +32,7 @@ namespace CodeJam.Dogfooding.PerfTests
 						TargetCount = 500,
 						InvocationCount = 256
 					}
-				}, true);
+				});
 		#endregion
 	}
 

@@ -24,7 +24,7 @@ namespace CodeJam.Dogfooding.PerfTests
 			return data.Count;
 		}
 
-		[CompetitionBenchmark(0.20, 0.45)]
+		[CompetitionBenchmark(0.20, 0.49)]
 		public int ListWithCapacity()
 		{
 			var data = new List<int>(Count);

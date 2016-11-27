@@ -81,6 +81,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Infrastructure\InProcessBuilder.cs" />
+    <Compile Include="Infrastructure\InProcessExecutor.cs" />
+    <Compile Include="Infrastructure\InProcessGenerator.cs" />
+    <Compile Include="Infrastructure\InProcessToolchain.cs" />
+    <Compile Include="Infrastructure\IRunnableBenchmark.cs" />
+    <Compile Include="Infrastructure\RunnableBenchmark.cs" />
+    <Compile Include="Infrastructure\RunnableBenchmarkFactory.cs" />
     <Compile Include="PerfTests\ByteArrayEqualityPerfTest.cs" />
     <Compile Include="PerfTests\ByteArrayEquality.cs" />
     <Compile Include="PerfTests\ListCapacityPerfTest.cs" />

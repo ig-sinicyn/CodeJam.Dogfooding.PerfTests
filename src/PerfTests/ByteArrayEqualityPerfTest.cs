@@ -61,19 +61,19 @@ namespace CodeJam.Dogfooding.PerfTests
 		[CompetitionBaseline]
 		public bool EqualsForLoop() => ByteArrayEquality.EqualsForLoop(_arrayA, _arrayB);
 
-		[CompetitionBenchmark(15.48, 16.96)]
+		[CompetitionBenchmark(14.08, 18.37)]
 		public bool EqualsLinq() => ByteArrayEquality.EqualsLinq(_arrayA, _arrayB);
 
-		[CompetitionBenchmark(0.08, 0.11)]
+		[CompetitionBenchmark(0.05, 0.14)]
 		public bool EqualsCodeJam() => ByteArrayEquality.EqualsCodeJam(_arrayA, _arrayB);
 
-		[CompetitionBenchmark(0.14, 0.21)]
+		[CompetitionBenchmark(0.12, 0.24)]
 		public bool EqualsVectors() => ByteArrayEquality.EqualsVectors(_arrayA, _arrayB);
 
-		[CompetitionBenchmark(0.19, 0.24)]
+		[CompetitionBenchmark(0.17, 0.24)]
 		public bool EqualsUnsafe() => ByteArrayEquality.EqualsUnsafe(_arrayA, _arrayB);
 
-		[CompetitionBenchmark(0.16, 0.19)]
+		[CompetitionBenchmark(0.12, 0.29)]
 		public bool EqualsInterop() => ByteArrayEquality.EqualsInterop(_arrayA, _arrayB);
 	}
 }

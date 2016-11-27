@@ -46,11 +46,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="CodeJam.PerfTests, Version=1.1.0.0, Culture=neutral, PublicKeyToken=7662d8fd5b220919, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeJam.PerfTests.Core.0.0.7-alpha\lib\net46\CodeJam.PerfTests.dll</HintPath>
+      <HintPath>..\packages\CodeJam.PerfTests.Core.0.0.8-alpha\lib\net46\CodeJam.PerfTests.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="CodeJam.PerfTests.NUnit, Version=1.1.0.0, Culture=neutral, PublicKeyToken=7662d8fd5b220919, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeJam.PerfTests.NUnit.0.0.7-alpha\lib\net46\CodeJam.PerfTests.NUnit.dll</HintPath>
+      <HintPath>..\packages\CodeJam.PerfTests.NUnit.0.0.8-alpha\lib\net46\CodeJam.PerfTests.NUnit.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="nunit.framework, Version=3.5.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">

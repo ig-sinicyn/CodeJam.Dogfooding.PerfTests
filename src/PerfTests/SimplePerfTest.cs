@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 
-using BenchmarkDotNet.Engines;
 using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Toolchains.InProcess;
 
@@ -23,16 +22,6 @@ namespace CodeJam.Dogfooding.PerfTests
 				});
 	}
 
-	public class UseCustomEngine : ICompetitionModifier
-	{
-		public void Modify(ManualCompetitionConfig competitionConfig) =>
-			competitionConfig.ApplyModifier(
-				new Job("CustomEngine")
-				{
-					Infrastructure = { EngineFactory = BurstModeEngineFactory.Instance }
-				});
-	}
-
 	public class SimplePerfTestBurst : SimplePerfTestBurstBase
 	{
 		[Test]
@@ -41,21 +30,6 @@ namespace CodeJam.Dogfooding.PerfTests
 
 	[CompetitionModifier(typeof(UseOldToolchain))]
 	public class SimplePerfTestOldBurst : SimplePerfTestBurstBase
-	{
-		[Test]
-		public void Run() => Competition.Run(this);
-	}
-
-	[CompetitionModifier(typeof(UseCustomEngine))]
-	public class SimplePerfTestBurstCustom : SimplePerfTestBurstBase
-	{
-		[Test]
-		public void Run() => Competition.Run(this);
-	}
-
-	[CompetitionModifier(typeof(UseOldToolchain))]
-	[CompetitionModifier(typeof(UseCustomEngine))]
-	public class SimplePerfTestOldBurstCustom : SimplePerfTestBurstBase
 	{
 		[Test]
 		public void Run() => Competition.Run(this);
@@ -74,21 +48,7 @@ namespace CodeJam.Dogfooding.PerfTests
 		public void Run() => Competition.Run(this);
 	}
 
-	[CompetitionModifier(typeof(UseCustomEngine))]
-	public class SimplePerfTestCustom : SimplePerfTestBase
-	{
-		[Test]
-		public void Run() => Competition.Run(this);
-	}
-
-	[CompetitionModifier(typeof(UseOldToolchain))]
-	[CompetitionModifier(typeof(UseCustomEngine))]
-	public class SimplePerfTestOldCustom : SimplePerfTestBase
-	{
-		[Test]
-		public void Run() => Competition.Run(this);
-	}
-
+	#region Base
 	[CompetitionFeatures(ContinuousIntegrationMode = true)]
 	public class SimplePerfTestBase
 	{
@@ -97,14 +57,23 @@ namespace CodeJam.Dogfooding.PerfTests
 		[CompetitionBaseline]
 		public void Baseline() => Thread.SpinWait(Count);
 
-		[CompetitionBenchmark(2.91, 3.09)]
+		[CompetitionBenchmark(2.88, 3.12)]
 		public void SlowerX3() => Thread.SpinWait(3 * Count);
 
-		[CompetitionBenchmark(4.85, 5.15)]
+		[CompetitionBenchmark(2.88, 3.12)]
+		public void SlowerX32() => Thread.SpinWait(3 * Count);
+
+		[CompetitionBenchmark(4.80, 5.20)]
 		public void SlowerX5() => Thread.SpinWait(5 * Count);
 
-		[CompetitionBenchmark(6.79, 7.21)]
+		[CompetitionBenchmark(4.80, 5.20)]
+		public void SlowerX52() => Thread.SpinWait(5 * Count);
+
+		[CompetitionBenchmark(6.72, 7.28)]
 		public void SlowerX7() => Thread.SpinWait(7 * Count);
+
+		[CompetitionBenchmark(6.72, 7.28)]
+		public void SlowerX72() => Thread.SpinWait(7 * Count);
 	}
 
 	[CompetitionBurstMode]
@@ -116,13 +85,23 @@ namespace CodeJam.Dogfooding.PerfTests
 		[CompetitionBaseline]
 		public void Baseline() => Thread.SpinWait(Count);
 
-		[CompetitionBenchmark(2.91, 3.09)]
+		[CompetitionBenchmark(2.88, 3.12)]
 		public void SlowerX3() => Thread.SpinWait(3 * Count);
 
-		[CompetitionBenchmark(4.85, 5.15)]
+		[CompetitionBenchmark(2.88, 3.12)]
+		public void SlowerX32() => Thread.SpinWait(3 * Count);
+
+		[CompetitionBenchmark(4.80, 5.20)]
 		public void SlowerX5() => Thread.SpinWait(5 * Count);
 
-		[CompetitionBenchmark(6.79, 7.21)]
+		[CompetitionBenchmark(4.80, 5.20)]
+		public void SlowerX52() => Thread.SpinWait(5 * Count);
+
+		[CompetitionBenchmark(6.72, 7.28)]
 		public void SlowerX7() => Thread.SpinWait(7 * Count);
-	}
+
+		[CompetitionBenchmark(6.72, 7.28)]
+		public void SlowerX72() => Thread.SpinWait(7 * Count);
+	} 
+	#endregion
 }
